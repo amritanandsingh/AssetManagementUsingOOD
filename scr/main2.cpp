@@ -3,6 +3,7 @@
 #include "../headers/log_In_Class.h"
 #include "../headers/main_helper.h"
 #include"../headers/AssetRequests.h"
+#include "../headers/login.h"
 using namespace std;
 
 int main()
@@ -23,14 +24,11 @@ int main()
             cout<<"Enter Password : ";
             cin>>password;
             //AssetDataOperations assetdataopration_object;
-            AuthenticationOperations obj;                     // AuthenticationOperations class object.
-            string status=obj.Login(userID,password);               // status contain only two char '1' and 'A' or 'E'   // if AssetTaggingDataOpeations than active status set as 1 in logIn.csv
-            string asset_name;
-            string purchasedate;
-            Asset x;
-            if(status[0]=='1' )                                 // if credentials found than control move to if block.
+            Login obj;
+            int status = obj.authenticate(userID,password);
+            if(status==0 || status==1 )                                 // if credentials found than control move to if block.
             {   
-                if(status[1]=='E')
+                if(status==0)
                 {    cout << "\033[2J\033[1;1H";
                     AssetRequestDataOpeations objOfRequest;             // this class belong from AssetRequests.h    
                     AssetTaggingDataOpeations  taggingObj;              //  this class defind in AssetTagging.h 
@@ -78,7 +76,7 @@ int main()
                                 objOfRequest.RequestStatus(userID);   // this fun. used to view status of request.
                                 break;
                             case 4:
-                                if(obj.Logout(userID))               // this funtion set active status to 0 in logIn.csv
+                              //  if(obj.Logout(userID))               // this funtion set active status to 0 in logIn.csv
                                     cout<<"Log Out Successful !"<<endl;
                                 break;    
                             default:
@@ -86,8 +84,8 @@ int main()
                                 break;
                         }
                     }while(choice!=4);
-                }
-                else if(status[1]=='A')                          // admin switch menu
+                }    
+                else if(status==1)                          // admin switch menu
                 {  
                     int choise;
                     do{ 
@@ -118,7 +116,7 @@ int main()
                                 break;
                             case 6:
                             {
-                                if(obj.Logout(userID))
+                               // if(obj.Logout(userID))
                                     cout<<"Log Out Successful !"<<endl;
                             }
                                 break; 
